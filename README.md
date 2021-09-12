@@ -13,10 +13,6 @@ The Stream HR Monitor Watch App communicates to the server side app (this one) v
 
 The Watch connects to this application via WebSocket. When the connection is made, the app starts keeping only the current heart rate in memory. When a web page ([for example](./views/index.html)) is shown on OBS or web browser, it tries to connect to WebSocket server at 127.0.0.1:3001 which is server by Stream HR Monitor. 
 
-## Installing for development 
-
-Clone the repo, start programming. 
-
 ## How to use
 
 1. Install the companion app into the watch
@@ -29,6 +25,17 @@ Clone the repo, start programming.
 8. You should see "WEB PAGE CONNECTED" message in the black box that is the Stream HR Monitor Server
 9. Click "START" from the Watch App. You should see "WATCH CONNECTED" in the same black box
 10. Your heart rate should appear in the web page now. 
+
+## Installing for development 
+
+Clone the repo, start programming. 
+
+## Building from source
+
+1. Create `dist` folder
+2. Install `nexe` globally. 
+3. Acquire a copy of UPX, put it on `dist` folder 
+4. Run `npm run build`
 
 ## Licence 
 

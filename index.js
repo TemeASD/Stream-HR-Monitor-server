@@ -31,12 +31,15 @@ function getWebPort() {
 console.log('Set the ports for the WebSockets to connect to')
 let clockPort = getClockPort()
 let webPort = getWebPort()
+let shownOnce = false;
+let triggered = false;
 init(clockPort, webPort)
 
 const wss = new WebSocketServer({ port: clockPort });
 wss.on('connection', (ws) => {
   console.log('WATCH CONNECTED')
-  let triggered = false;
+  shownOnce = false;
+  triggered = false;
   ws.on('message', (message) => {
     if (message.data instanceof ArrayBuffer) {
       // binary frame
@@ -46,7 +49,8 @@ wss.on('connection', (ws) => {
       // text frame
       utf8msg = utf8decoder.decode(message)
       heartRate = utf8msg
-      if (heartRate > 40) {
+      if (heartRate > 40 && !shownOnce) {
+        shownOnce = true;
         console.log('Heart Rate acquired from the Watch!')
       }
     }

@@ -4,6 +4,7 @@
   "description": "Client part of HR monitor made for Tizen OS watches",
   "main": "index.js",
   "scripts": {
+    "build": "nexe --build index.js -o ./dist/stream-hr-mon-server.exe && cd dist && upx.exe --best stream-hr-mon-server.exe",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Teemu Pölkki",
