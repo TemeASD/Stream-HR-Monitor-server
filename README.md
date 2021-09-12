@@ -1,8 +1,8 @@
 # Stream HR Monitor
 
-Simple server side app for showing your heart rate in a stream made by utilizing WebSockets. Requires Tizen OS smart watch companion app available [here](linkhere) and source code [here](linkhere). The server app is written in JavaScript and runs on NodeJS. I know, there would've been better suited technologies for this, but JavaScript is what I know and you gotta take the wins you can. 
+Simple server side app for showing your heart rate in a stream made by utilizing WebSockets. Requires Tizen OS smart watch companion app available [here](#) and source code [here](#). The server app is written in JavaScript and runs on NodeJS. I know, there would've been better suited technologies for this, but JavaScript is what I know and you gotta take the wins you can. 
 
-I've used [nexe](https://github.com/nexe/nexe) and [UPX](https://upx.github.io/) to build the release versions available [here](linkhere).
+I've used [nexe](https://github.com/nexe/nexe) and [UPX](https://upx.github.io/) to build the release versions available [here](https://github.com/TemeASD/Stream-HR-Monitor-server/releases).
 
 ## App architecture
 
