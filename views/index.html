@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 250px;
+            height: 200px;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            height: 100%;
+            width: 100%;
+            font-size: 50px;
+            align-items: center;
+        }
+
+        .sub-container {
+            left: 0;
+            top: 0;
+            width: 100%;
+            flex-grow: 1;
+            align-self: center;
+            text-align: center;
+            font-family: 'calibri';
+            color: rgb(236, 236, 236);
+        }
+
+        #hr {
+            -webkit-text-stroke: 1px black
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="fuck">
+        <!--<div class="heart-rate">
+            <svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                y="0px" width="150px" height="73px" viewBox="0 0 150 73" enable-background="new 0 0 150 73"
+                xml:space="preserve">
+                <polyline fill="none" stroke="#009B9E" stroke-width="3" stroke-miterlimit="10"
+                    points="0,45.486 38.514,45.486 44.595,33.324 50.676,45.486 57.771,45.486 62.838,55.622 71.959,9 80.067,63.729 84.122,45.486 97.297,45.486 103.379,40.419 110.473,45.486 150,45.486" />
+            </svg>
+            <div class="fade-in"></div>
+            <div class="fade-out"></div>
+        </div>-->
+
+        <div class="container">
+            <p class="sub-container" id="hr">140</p>
+        </div>
+
+    </div>
+    <div><canvas id="HRchart" width="250" height="200"></canvas></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script>
+        let ctx = document.getElementById('HRchart');
+        let hrData = [...Array(100).keys()].fill(65)
+        function updateHrData(chart, data, tick) {
+            if (data.length = 100) { data.shift() }
+            console.log(data, tick)
+            data.push(tick)
+            chart.data.datasets.forEach((dataset) => {
+                dataset.data.push(data);
+            });
+            chart.update()
+        }
+        console.log('here', ctx)
+        const data = {
+            labels: [...Array(100).keys()],
+            datasets: [{
+                label: 'Heart rate',
+                data: hrData,
+                fill: false,
+                strokeColor: "rgba(0,0,0,0)",
+                pointColor: "rgba(151,187,205,0)",
+                pointHighlightStroke: "rgba(151,187,205,0)",
+                borderColor: 'rgb(75, 192, 192)',
+                pointRadius: 0,
+                tension: 0.1
+            }]
+        };
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        min: 50,
+                        max: 120,
+                        beginAtZero: true,
+                    },
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                }
+            }
+
+        };
+        let myChart = new Chart(ctx, config);
+
+    </script>
+
+    <script>
+        const wsClient = new WebSocket('ws://localhost:3667');
+        var hrElement = document.getElementById('hr')
+        wsClient.onopen = function (event) {
+            wsClient.send("Here's some text that the server is urgently awaiting!");
+        };
+
+        wsClient.onmessage = function (event) {
+            hrElement.innerHTML = event.data;
+            updateHrData(myChart, hrData, event.data)
+        }
+
+        wsClient.onerror = function (event) {
+            console.log(event)
+        }
+
+        wsClient.onclose = function (event) {
+            console.log(event)
+        }
+            (function loop() {
+                setTimeout(function () {
+                    if (wsClient.readyState === 1) {
+                        wsClient.send('give hr data');
+                    }
+                    loop()
+                }, 500);
+            }());
+        loop();
+    </script>
+</body>
+
+</html>
